@@ -5,6 +5,10 @@ setup(
     version='0.1.0',
     packages=find_packages(include=['code', 'code.*']),
     install_requires=[
-        'configparser'
+        'configparser',
+        'beautifulsoup4',
+        'wxpython',
+        'EbookLib',
+        'edge_tts'
     ]
 )
