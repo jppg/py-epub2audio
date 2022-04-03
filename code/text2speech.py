@@ -7,10 +7,12 @@ import os
 import re 
 
 class Text2Speech:
-   async def convert():
+   async def convert(input_voice):
       """
       Main function
       """
+      print("Convert book with voice", input_voice)
+      
       home_path = "output"
       for filename in os.listdir(home_path):
          file_path = os.path.join(home_path, filename)
@@ -29,7 +31,8 @@ class Text2Speech:
             #with tempfile.NamedTemporaryFile(delete=False, dir='.\\output', suffix='.mp3') as temporary_file:
             with open('.\\output\\record.mp3', 'ab') as temporary_file:
                print("Converting", filename)
-               async for i in communicate.run(lines, voice="pt-PT-RaquelNeural"):
+               #https://docs.microsoft.com/en-US/azure/cognitive-services/speech-service/language-support
+               async for i in communicate.run(lines, voice=input_voice):
                   if i[2] is not None:
                      temporary_file.write(i[2])
       print("End")
