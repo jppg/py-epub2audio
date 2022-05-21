@@ -7,6 +7,7 @@ import os
 import re 
 
 class Text2Speech:
+
    async def convert(input_voice):
       """
       Main function
@@ -14,9 +15,14 @@ class Text2Speech:
       print("Convert book with voice", input_voice)
       
       home_path = "output"
+
+      lst_files = [s for s in os.listdir(home_path)
+         if os.path.isfile(os.path.join(home_path, s))]
+      lst_files.sort(key=lambda s: os.path.getctime(os.path.join(home_path, s)))
+
       for filename in os.listdir(home_path):
          file_path = os.path.join(home_path, filename)
-         print(file_path)
+         #print(file_path, os.path.getctime(file_path))
          
          if os.path.isfile(file_path) and re.search('.txt', file_path):
             communicate = edge_tts.Communicate()
