@@ -56,7 +56,7 @@ class Epub2AudioApp(wx.Frame):
 		
       boxVoice.Add(lblVoice, 1, wx.EXPAND|wx.ALIGN_LEFT|wx.ALL,5) 
       
-      lstVoices = ["pt-PT-DuarteNeural", "pt-PT-FernandaNeural", "pt-PT-RaquelNeural", "en-US-AmberNeural", "en-US-ChristopherNeural"]
+      lstVoices = ["pt-PT-RaquelNeural","pt-PT-DuarteNeural", "pt-PT-FernandaNeural", "en-US-AriaNeural", "en-US-GuyNeural","es-ES-ElviraNeural"]
 
       self.cbVoices = wx.ComboBox(self.panel, value = lstVoices[0], choices = lstVoices, size=(200,20))
       #cbVoices.Bind(wx.EVT_COMBOBOX, self.ComboBoxEvent)
@@ -96,7 +96,11 @@ class Epub2AudioApp(wx.Frame):
         openFileDialog.Destroy()
 
    def onBtConvert(self, event):
-      shutil.rmtree('output')
+      try:
+         shutil.rmtree('output')
+      except:
+         True
+         
       Epub(self.txtFile.Value)
       path = os.path.realpath('output')
       os.startfile(path)
