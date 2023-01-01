@@ -20,7 +20,7 @@ class Text2Speech:
          if os.path.isfile(os.path.join(home_path, s))]
       lst_files.sort(key=lambda s: os.path.getctime(os.path.join(home_path, s)))
 
-      for filename in os.listdir(home_path):
+      for filename in lst_files:
          file_path = os.path.join(home_path, filename)
          #print(file_path, os.path.getctime(file_path))
          
