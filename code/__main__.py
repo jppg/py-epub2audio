@@ -89,7 +89,7 @@ class Epub2AudioApp(wx.Frame):
 
    def onBtFile(self, event):
         openFileDialog = wx.FileDialog(self.panel, "Choose book file...", "", "", 
-         "EPUB files (*.epub)|*.epub", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
+         "e-book files (*.epub;*.pdf)|*.epub;*.pdf", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
 
         if openFileDialog.ShowModal() == wx.ID_OK:
             self.txtFile.Value = openFileDialog.GetPath()

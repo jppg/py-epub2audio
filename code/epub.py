@@ -5,6 +5,8 @@ import zipfile
 from ebooklib import epub
 from bs4 import BeautifulSoup
 from pathlib import Path
+import aspose.words as aw
+import PyPDF2
 
 class Epub:
 
@@ -12,11 +14,15 @@ class Epub:
 
     def __init__(self, ebook_path):
         os.makedirs(self.HOME_PATH, exist_ok=True)
-        try:
-            self.open_epub_file(ebook_path)
-        except Exception as e:
-            print("Try to open file as zip")
-            self.open_epub_file_as_zip(ebook_path)
+        file_extension = Path(ebook_path).suffix
+        if file_extension == '.pdf':
+            self.convert_pdf_to_txt(ebook_path)
+        else:
+            try:
+                self.open_epub_file(ebook_path)
+            except Exception as e:
+                print("Try to open file as zip")
+                self.open_epub_file_as_zip(ebook_path)
 
     def open_epub_file_as_zip(self, ebook_path):
         with zipfile.ZipFile(ebook_path, 'r') as zip_ref:
@@ -74,4 +80,26 @@ class Epub:
         
         with open(file_to_save, 'w', encoding='utf-8') as f:
             f.write(raw)
+        print("End")
+
+    def convert_pdf_to_txt(self, ebook_path):
+        filename = Path(ebook_path).stem
+        pdffileobj=open(ebook_path,'rb')
+        pdfreader=PyPDF2.PdfReader(pdffileobj)
+        meta = pdfreader.metadata
+        print(meta.author)
+        print(meta.title)
+
+        file_count = 0
+        n_pages=len(pdfreader.pages)
+        for pg in range(n_pages):
+            pageobj= pdfreader.pages[pg]
+            text = pageobj.extract_text()
+            #text = text.replace("\t", " ")
+            #text = text.replace("\n", " ")
+            filename = "file_" + str(file_count) + ".txt"
+            output_file = open(os.path.join(self.HOME_PATH, filename),"a", encoding='utf-8')
+            output_file.writelines(text)
+            if pg % 10 == 0:
+                file_count += 1
         print("End")
