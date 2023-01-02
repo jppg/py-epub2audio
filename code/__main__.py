@@ -68,6 +68,11 @@ class Epub2AudioApp(wx.Frame):
       lblStep4 = wx.StaticText(self.panel, -1, "Step 4) Record audio") 
       vbox.Add(lblStep4)
 
+      self.txtTitle = wx.TextCtrl(self.panel, value="Title", style=wx.EXPAND|wx.ALIGN_LEFT, size=(400,20))
+      vbox.Add(self.txtTitle)
+      self.txtAuthor = wx.TextCtrl(self.panel, value="Author", style=wx.EXPAND|wx.ALIGN_LEFT, size=(200,20))
+      vbox.Add(self.txtAuthor)
+
       boxConvRecordAudio = wx.BoxSizer(wx.HORIZONTAL)
 
       btnOut = wx.Button(self.panel, label="Record")
@@ -76,10 +81,7 @@ class Epub2AudioApp(wx.Frame):
 
       vbox.Add(boxConvRecordAudio)
       
-      self.panel.SetSizer(vbox) 
-      
-
-      
+      self.panel.SetSizer(vbox)     
 
       self.Centre()
       self.Show()
@@ -101,12 +103,16 @@ class Epub2AudioApp(wx.Frame):
       except:
          True
          
-      Epub(self.txtFile.Value)
+      epub = Epub()
+      epub.convert2Txt(self.txtFile.Value)
+      self.txtTitle.SetValue(epub.get_title())
+      self.txtAuthor.SetValue(epub.get_author())
+
       path = os.path.realpath('output')
       os.startfile(path)
 
    def onBtRecord(self, event):
-      asyncio.run(Text2Speech.convert(self.cbVoices.GetValue()))
+      asyncio.run(Text2Speech.convert(self.cbVoices.GetValue(), self.txtTitle.GetValue(), self.txtAuthor.GetValue()))
  
    def ComboBoxEvent(self, event):
       cb = event.GetEventObject()

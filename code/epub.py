@@ -11,9 +11,13 @@ import PyPDF2
 class Epub:
 
     HOME_PATH = "output"
+    title = ""
+    author = ""
 
-    def __init__(self, ebook_path):
+    def __init__(self):
         os.makedirs(self.HOME_PATH, exist_ok=True)
+
+    def convert2Txt(self, ebook_path):
         file_extension = Path(ebook_path).suffix
         if file_extension == '.pdf':
             self.convert_pdf_to_txt(ebook_path)
@@ -40,9 +44,9 @@ class Epub:
     def open_epub_file(self, ebook_path):
         book = epub.read_epub(ebook_path)
 
-        print(book.get_metadata('DC', 'title'))
-        print(book.get_metadata('DC', 'creator'))
-        print(book.get_metadata('DC', 'language'))
+        self.title = book.get_metadata('DC', 'title')
+        self.author = book.get_metadata('DC', 'creator')
+        #print(book.get_metadata('DC', 'language'))
 
         count = 0
 
@@ -87,19 +91,23 @@ class Epub:
         pdffileobj=open(ebook_path,'rb')
         pdfreader=PyPDF2.PdfReader(pdffileobj)
         meta = pdfreader.metadata
-        print(meta.author)
-        print(meta.title)
+        self.author = meta.author
+        self.title = meta.title
 
         file_count = 0
         n_pages=len(pdfreader.pages)
         for pg in range(n_pages):
             pageobj= pdfreader.pages[pg]
             text = pageobj.extract_text()
-            #text = text.replace("\t", " ")
-            #text = text.replace("\n", " ")
             filename = "file_" + str(file_count) + ".txt"
             output_file = open(os.path.join(self.HOME_PATH, filename),"a", encoding='utf-8')
             output_file.writelines(text)
             if pg % 10 == 0:
                 file_count += 1
         print("End")
+
+    def get_author(self):
+        return self.author
+
+    def get_title(self):
+        return self.title
