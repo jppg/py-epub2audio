@@ -9,6 +9,11 @@ setup(
         'beautifulsoup4',
         'wxpython',
         'EbookLib',
-        'edge_tts'
+        'edge_tts',
+        'pypdf',
+        'pdf2image',
+        'numpy',
+        'cv2',
+        'pytesseract'
     ]
 )
