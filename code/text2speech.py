@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-"""
-Example Python script that shows how to use edge-tts as a module
-"""
-import edge_tts
-import os
-import re 
+
 import json
-from nltk.tokenize import sent_tokenize
+import os
+import re
+
+import edge_tts
 import nltk
+from nltk.tokenize import sent_tokenize
 
 nltk.download('punkt')
 
@@ -40,9 +39,7 @@ class Text2Speech:
          print("Converting", input_file)
          file_path = os.path.join(home_path, input_file)
          
-         if os.path.isfile(file_path) and re.search('.txt', file_path):
-            communicate = edge_tts.Communicate()
-            
+         if os.path.isfile(file_path) and re.search(r'\.txt$', file_path):
             with open(file_path, 'r', encoding='utf-8') as f:
                lines = f.read()
                file_tk = ''
@@ -57,8 +54,6 @@ class Text2Speech:
                   file_tk += tk + '\n'
 
                #https://docs.microsoft.com/en-US/azure/cognitive-services/speech-service/language-support
-               with open('.\\output\\' + filename, 'ab') as temporary_file:
-                  async for i in communicate.run(file_tk, voice=input_voice):
-                     if i[2] is not None:
-                        temporary_file.write(i[2])
+               communicate = edge_tts.Communicate(file_tk, input_voice)
+               await communicate.save(os.path.join('output', filename))
       print("End")
