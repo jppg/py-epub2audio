@@ -3,8 +3,11 @@ import wx
 import asyncio
 import os
 import shutil
+from pathlib import Path
 from wx.core import Size
 from epub import Epub
+from pdf import Pdf
+from scanner_image import ScannerImage
 from text2speech import Text2Speech
 
 class Epub2AudioApp(wx.Frame):       
@@ -13,9 +16,7 @@ class Epub2AudioApp(wx.Frame):
       
       self.panel = wx.Panel(self)
 
-      vbox = wx.BoxSizer(wx.VERTICAL)
-      
-      
+      vbox = wx.BoxSizer(wx.VERTICAL)      
 
       #step 1) choose e-book fle
       lblStep1 = wx.StaticText(self.panel, -1, "Step 1) Choose e-book file") 
@@ -39,7 +40,10 @@ class Epub2AudioApp(wx.Frame):
       vbox.Add(lblStep2)
 
       boxConvRecordText = wx.BoxSizer(wx.HORIZONTAL)
-      
+
+      self.cbOcr = wx.CheckBox(self.panel, label='OCR', pos=(10,10)) 
+      boxConvRecordText.Add(self.cbOcr, 1, wx.EXPAND|wx.ALIGN_LEFT|wx.ALL,5)
+
       btnConv = wx.Button(self.panel, label="Convert to text")
       btnConv.Bind(wx.EVT_BUTTON, self.onBtConvert)
       boxConvRecordText.Add(btnConv, 1, wx.EXPAND|wx.ALIGN_LEFT|wx.ALL,5)
@@ -98,15 +102,24 @@ class Epub2AudioApp(wx.Frame):
         openFileDialog.Destroy()
 
    def onBtConvert(self, event):
-      try:
-         shutil.rmtree('output')
-      except:
-         True
-         
-      epub = Epub()
-      epub.convert2Txt(self.txtFile.Value)
-      self.txtTitle.SetValue(epub.get_title())
-      self.txtAuthor.SetValue(epub.get_author())
+      file_extension = Path(self.txtFile.Value).suffix
+      if file_extension != None and file_extension != '':
+         try:
+            shutil.rmtree('output')
+         except:
+            True
+
+      if file_extension == '.pdf':
+         pdf = Pdf()
+         pdf.convert_pdf_to_txt(self.txtFile.Value, self.cbOcr.Value)
+      elif file_extension == '.epub':
+         epub = Epub()
+         epub.convert2Txt(self.txtFile.Value)
+      else:
+         img = ScannerImage()
+         img.convert_img_to_txt()
+      #self.txtTitle.SetValue(epub.get_title())
+      #self.txtAuthor.SetValue(epub.get_author())
 
       path = os.path.realpath('output')
       os.startfile(path)
