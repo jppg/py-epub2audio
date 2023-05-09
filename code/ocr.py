@@ -65,7 +65,7 @@ class Ocr:
     def get_text_from_image(self, img, language='por'):
         h, w, c = img.shape
         
-        processed_img = self.pre_proc_img_a(img)
+        #processed_img = self.pre_proc_img_a(img)
         
         #[+more details] 
         # https://pyimagesearch.com/2021/05/12/adaptive-thresholding-with-opencv-cv2-adaptivethreshold/ 
