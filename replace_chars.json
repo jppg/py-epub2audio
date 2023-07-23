@@ -1,5 +1,6 @@
 {
     "chars": [
+        {"old": "-\n", "new": ""},
         {"old": "\n", "new": " "},
         {"old": "\t", "new": " "},
         {"old": "¼", "new": "1 quarto"},
