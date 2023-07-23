@@ -53,12 +53,11 @@ class Text2Speech:
                for item in range(len(data_dict["chars"])):
                   lines = lines.replace(data_dict["chars"][item]["old"], data_dict["chars"][item]["new"])
 
-               for tk in sent_tokenize(lines):
-                  file_tk += tk + '\n'
-
                #https://docs.microsoft.com/en-US/azure/cognitive-services/speech-service/language-support
                with open('.\\output\\' + filename, 'ab') as temporary_file:
-                  async for i in communicate.run(file_tk, voice=input_voice):
-                     if i[2] is not None:
-                        temporary_file.write(i[2])
+                  for tk in sent_tokenize(lines):
+                     #file_tk += tk + '\n'
+                     async for i in communicate.run(tk, voice=input_voice):
+                        if i[2] is not None:
+                           temporary_file.write(i[2])
       print("End")
