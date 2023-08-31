@@ -9,11 +9,15 @@ setup(
         'beautifulsoup4',
         'wxpython',
         'EbookLib',
-        'edge_tts',
+        'edge-tts',
         'pypdf',
         'pdf2image',
-        'numpy',
-        'cv2',
-        'pytesseract'
+        #'numpy',
+        #'cv2',
+        'pytesseract',
+        'pypdfium2',
+        'nltk',
+        'langchain',
+        'doctran'
     ]
 )

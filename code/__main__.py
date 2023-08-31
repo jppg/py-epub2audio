@@ -1,7 +1,7 @@
 from attr.setters import convert
 import wx
 import asyncio
-import os
+import os, sys, subprocess
 import shutil
 from pathlib import Path
 from wx.core import Size
@@ -9,8 +9,16 @@ from epub import Epub
 from pdf import Pdf
 from scanner_image import ScannerImage
 from text2speech import Text2Speech
+from wakepy import keep
 
-class Epub2AudioApp(wx.Frame):       
+def open_file(filename):
+   if sys.platform == "win32":
+      os.startfile(filename)
+   else:
+      opener = "open" if sys.platform == "darwin" else "xdg-open"
+      subprocess.call([opener, filename])
+      
+class Epub2AudioApp(wx.Frame):      
    def __init__(self, parent, title): 
       super().__init__(parent = None, title = title, size=(400,300))
       
@@ -122,10 +130,11 @@ class Epub2AudioApp(wx.Frame):
       #self.txtAuthor.SetValue(epub.get_author())
 
       path = os.path.realpath('output')
-      os.startfile(path)
+      open_file(path)
 
    def onBtRecord(self, event):
-      asyncio.run(Text2Speech.convert(self.cbVoices.GetValue(), self.txtTitle.GetValue(), self.txtAuthor.GetValue()))
+      with keep.presenting() as k:
+         asyncio.run(Text2Speech.convert(self.cbVoices.GetValue(), self.txtTitle.GetValue(), self.txtAuthor.GetValue()))
  
    def ComboBoxEvent(self, event):
       cb = event.GetEventObject()
