@@ -38,7 +38,8 @@ class Text2Speech:
 
       lst_files = [s for s in os.listdir(home_path)
          if os.path.isfile(os.path.join(home_path, s))]
-      lst_files.sort(key=lambda s: os.path.join(home_path, s))
+      #lst_files.sort(key=lambda s: os.path.join(home_path, s))
+      lst_files.sort(key=lambda s: os.path.getmtime(os.path.join(home_path, s)))
 
       for input_file in lst_files:
          print("Converting", input_file)

@@ -68,7 +68,7 @@ class Epub2AudioApp(wx.Frame):
 		
       boxVoice.Add(lblVoice, 1, wx.EXPAND|wx.ALIGN_LEFT|wx.ALL,5) 
       
-      lstVoices = ["pt-PT-RaquelNeural","pt-PT-DuarteNeural", "pt-PT-FernandaNeural", "en-US-AriaNeural", "en-US-SteffanNeural", "en-US-GuyNeural","es-ES-ElviraNeural", "es-ES-ArnauNeural","es-ES-DarioNeural"]
+      lstVoices = ["pt-PT-RaquelNeural","pt-PT-DuarteNeural", "pt-PT-FernandaNeural", "en-US-AriaNeural", "en-US-SteffanNeural", "en-US-GuyNeural","es-ES-ElviraNeural", "es-ES-AlvaroNeural","es-ES-DarioNeural"]
 
       self.cbVoices = wx.ComboBox(self.panel, value = lstVoices[0], choices = lstVoices, size=(200,20))
       #cbVoices.Bind(wx.EVT_COMBOBOX, self.ComboBoxEvent)
