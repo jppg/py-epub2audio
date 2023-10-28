@@ -18,6 +18,7 @@ setup(
         'pypdfium2',
         'nltk',
         'langchain',
-        'doctran'
+        'doctran',
+        'wakepy'
     ]
 )
